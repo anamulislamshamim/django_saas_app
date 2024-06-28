@@ -7,13 +7,44 @@ from visits.models import PageVisit
 
 this_dir = pathlib.Path(__file__).resolve().parent
 
-def home_page_view(request, *args, **kwargs):
+def about_page_view(request, *args, **kwargs):
     PageVisit.objects.create(path=request.path)
+    total_count = PageVisit.objects.all().count()
     queryset = PageVisit.objects.filter(path=request.path)
+    
+    # Handle zero division error 
+    try:
+        percent = (queryset.count() * 100.0) / total_count 
+    except:
+        percent = 0 
+    
     my_title = "My Page" 
     my_context = {
-        "page_title": my_title, 
+        "page_title": my_title,
+        "percent": f"{percent:.2f}", 
         "page_visit_count": queryset.count(),
+        "total_count": total_count
+    }
+    html_template = "home.html"
+    return render(request, html_template, my_context)
+
+def home_page_view(request, *args, **kwargs):
+    PageVisit.objects.create(path=request.path)
+    total_count = PageVisit.objects.all().count()
+    queryset = PageVisit.objects.filter(path=request.path)
+    
+    # Handle zero division error 
+    try:
+        percent = (queryset.count() * 100.0) / total_count 
+    except:
+        percent = 0 
+    
+    my_title = "My Page" 
+    my_context = {
+        "page_title": my_title,
+        "percent": f"{percent:.2f}", 
+        "page_visit_count": queryset.count(),
+        "total_count": total_count
     }
     html_template = "home.html"
     return render(request, html_template, my_context)
