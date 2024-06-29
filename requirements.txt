@@ -1,2 +1,5 @@
 Django==4.2.13
 gunicorn
+python-decouple
+psycopg[binary] # For postgresql database 
+dj-database-url # For connecting serverless database using API's link 
