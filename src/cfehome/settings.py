@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # my-apps 
     'visits',
+    'commando',
 ]
 
 MIDDLEWARE = [
@@ -93,7 +94,7 @@ DATABASES = {
     }
 }
 
-DATABSAE_URL = config("DATABASE_URL", cast=str)
+DATABSAE_URL = config("DATABASE_URL", cast=str, default=None)
 CONN_MAX_AGE = config("CONN_MAX_AGE", default=30, cast=int)
 
 if DATABSAE_URL is not None:
@@ -135,7 +136,7 @@ LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
+ 
 USE_TZ = True
 
 
@@ -143,6 +144,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_BASE_DIR = BASE_DIR / "staticfiles" 
+# STATICFILES_BASE_DIR.mkdir(parents=True, exist_ok=True)
+STATICFILES_VENDOR_DIR = STATICFILES_BASE_DIR / "vendors" 
+
+# source(s) for python manage.py collectstatic 
+STATICFILES_DIRS = [
+    STATICFILES_BASE_DIR,
+]
+
+# Output for python manage.py collectstatic 
+# local cdn 
+STATIC_ROOT = BASE_DIR / "local-cdn" 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
